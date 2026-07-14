@@ -49,27 +49,46 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         itemCount: myFutureList.length,
         itemBuilder: (context, index) {
           final myList = myFutureList[index];
-          return InkWell(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 6.0,
-              ),
-              child: Row(
-                children: [
-                  Checkbox(
-                    value: myList.isCompleted,
-                    onChanged: (bool? newValue) {
-                      setState(() {
-                        myList.isCompleted = newValue ?? false;
-                      });
-                    },
-                  ),
-                  Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
-                ],
+          return CheckboxListTile(
+            value: myList.isCompleted,
+            onChanged: (newValue) {
+              setState(() {
+                myList.isCompleted = newValue ?? false;
+              });
+            },
+            title: Text(
+              myList.name,
+              style: TextStyle(
+                decoration:
+                    myList.isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
               ),
             ),
+            controlAffinity: ListTileControlAffinity.leading,
+            hoverColor: Colors.blueGrey,
           );
+          // InkWell(
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: 20.0,
+          //       vertical: 6.0,
+          //     ),
+          //     child: Row(
+          //       children: [
+          //         Checkbox(
+          //           value: myList.isCompleted,
+          //           onChanged: (bool? newValue) {
+          //             setState(() {
+          //               myList.isCompleted = newValue ?? false;
+          //             });
+          //           },
+          //         ),
+          //         Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
+          //       ],
+          //     ),
+          //   ),
+          // );
         },
       )),
     );
