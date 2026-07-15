@@ -91,6 +91,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           // );
         },
       )),
+      floatingActionButton: Semantics(
+        label: "Add WatchList",
+        child: FloatingActionButton(onPressed: () {
+          setState(() {
+            myFutureList.add(FutureList(name: "Hey Hi", isCompleted: false));
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Open Dialog"))
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.add),),
+      ),
     );
   }
 }
