@@ -33,6 +33,66 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     FutureList(name: "Avengers"),
   ];
 
+  final TextEditingController _watchlistName = TextEditingController();
+
+  Future<void> _showAddDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Add new Watchlist", style: TextStyle(color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w800),),
+          content: SingleChildScrollView(
+            child: TextField(
+              controller: _watchlistName,
+              autofocus: true,
+              decoration: InputDecoration(hintText: "Enter Watchlist name"),
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _watchlistName.text = "";
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.grey[800],
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  child: Text("Cancel", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: Colors.black),),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_watchlistName.text.isNotEmpty) {
+                      setState(() {
+                        myFutureList.add(
+                          FutureList(
+                            name: _watchlistName.text,
+                            isCompleted: false,
+                          ),
+                        );
+                      });
+                      Navigator.pop(context);
+                      _watchlistName.text = "";
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue[700],
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  child: Text("Create", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // final TextEditingController _textContoller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -93,16 +153,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       )),
       floatingActionButton: Semantics(
         label: "Add WatchList",
-        child: FloatingActionButton(onPressed: () {
-          setState(() {
-            myFutureList.add(FutureList(name: "Hey Hi", isCompleted: false));
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Open Dialog"))
-          );
-        },
-        backgroundColor: Colors.blue,
-        child: Icon(Icons.add),),
+        child: FloatingActionButton(
+          onPressed: () {
+            // setState(() {
+            //   myFutureList.add(FutureList(name: "Hey Hi", isCompleted: false));
+            // });
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text("Open Dialog"))
+            // );
+            _showAddDialog(context);
+          },
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
