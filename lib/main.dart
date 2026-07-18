@@ -40,7 +40,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Add new Watchlist", style: TextStyle(color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w800),),
+          title: Text("Add new Watchlist", style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w900),),
           content: SingleChildScrollView(
             child: TextField(
               controller: _watchlistName,
@@ -164,7 +164,10 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             _showAddDialog(context);
           },
           backgroundColor: Colors.blue,
-          child: Icon(Icons.add),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(Icons.add, size: 32.0,color: Colors.white, weight: 700.0,),
         ),
       ),
     );
