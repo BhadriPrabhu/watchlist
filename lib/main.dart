@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MainApp());
@@ -16,7 +16,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: WatchlistScreen());
+    return MaterialApp(
+      title: "Watchlist",
+      theme: ThemeData(
+        textTheme: GoogleFonts.outfitTextTheme(),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+      ),
+      home: WatchlistScreen()
+    );
   }
 }
 
@@ -40,7 +47,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Add new Watchlist", style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w900),),
+          title: Text(
+            "Add new Watchlist",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           content: SingleChildScrollView(
             child: TextField(
               controller: _watchlistName,
@@ -61,7 +75,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     foregroundColor: Colors.grey[800],
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   ),
-                  child: Text("Cancel", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: Colors.black),),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -83,7 +104,13 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     backgroundColor: Colors.blue[700],
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   ),
-                  child: Text("Create", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),),
+                  child: Text(
+                    "Create",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -100,13 +127,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       appBar: AppBar(
         title: Text(
           "WatchList",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         toolbarHeight: 50.0,
         backgroundColor: Colors.blueAccent,
       ),
-      body: (ListView.builder(
+      body: (ListView.separated(
         itemCount: myFutureList.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 8,),
         itemBuilder: (context, index) {
           final myList = myFutureList[index];
           return CheckboxListTile(
@@ -123,10 +151,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     myList.isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
+                fontWeight: FontWeight.w500
               ),
             ),
             controlAffinity: ListTileControlAffinity.leading,
             hoverColor: Colors.blueGrey,
+
+            tileColor: Colors.grey.shade100, // Background color of the tile
+            selectedTileColor:Colors.cyan, // Background when selected is true
+            selected: myList.isCompleted,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(width: 1, color: Colors.blueGrey)
+            ),
           );
           // InkWell(
           //   child: Padding(
@@ -150,6 +187,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           //   ),
           // );
         },
+        padding: EdgeInsets.all(12.0),     
       )),
       floatingActionButton: Semantics(
         label: "Add WatchList",
@@ -167,7 +205,12 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Icons.add, size: 32.0,color: Colors.white, weight: 700.0,),
+          child: Icon(
+            Icons.add,
+            size: 32.0,
+            color: Colors.white,
+            weight: 700.0,
+          ),
         ),
       ),
     );
