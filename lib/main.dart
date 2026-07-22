@@ -175,8 +175,9 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           "WatchList",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
-        toolbarHeight: 50.0,
+        toolbarHeight: 60.0,
         backgroundColor: Colors.blueAccent,
+        titleSpacing: 24.0,
       ),
       body: (ListView.separated(
         itemCount: myFutureList.length,
