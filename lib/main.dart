@@ -7,8 +7,9 @@ void main() {
 
 class FutureList {
   String name;
+  String desc;
   bool isCompleted;
-  FutureList({required this.name, this.isCompleted = false});
+  FutureList({required this.name, this.desc = "", this.isCompleted = false});
 }
 
 class MainApp extends StatelessWidget {
@@ -20,9 +21,9 @@ class MainApp extends StatelessWidget {
       title: "Watchlist",
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: WatchlistScreen()
+      home: WatchlistScreen(),
     );
   }
 }
@@ -36,11 +37,15 @@ class WatchlistScreen extends StatefulWidget {
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
   List<FutureList> myFutureList = [
-    FutureList(name: "Spider Man"),
-    FutureList(name: "Avengers"),
+    FutureList(
+      name: "Spider Man - Brand New Day",
+      desc: "In Cinemas on July 30",
+    ),
+    FutureList(name: "Avengers - Doomsday", desc: "In Cinemas on December 18"),
   ];
 
   final TextEditingController _watchlistName = TextEditingController();
+  final TextEditingController _watchlistDesc = TextEditingController();
 
   Future<void> _showAddDialog(BuildContext context) async {
     return showDialog(
@@ -48,18 +53,56 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Add new Watchlist",
+            "Add New Watchlist",
             style: TextStyle(
               color: Colors.black,
               fontSize: 20.0,
               fontWeight: FontWeight.w900,
             ),
           ),
-          content: SingleChildScrollView(
-            child: TextField(
-              controller: _watchlistName,
-              autofocus: true,
-              decoration: InputDecoration(hintText: "Enter Watchlist name"),
+          insetPadding: EdgeInsets.symmetric(horizontal: 30.0),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                spacing: 10.0,
+                children: [
+                  TextField(
+                    controller: _watchlistName,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Enter Watchlist name",
+                      hintStyle: TextStyle(fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0.5,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ),
+                    style: TextStyle(),
+                    maxLength: 50,
+                  ),
+                  TextField(
+                    controller: _watchlistDesc,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Enter Description",
+                      hintStyle: TextStyle(fontWeight: FontWeight.w500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0.5,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ),
+                    style: TextStyle(),
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -70,6 +113,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                     _watchlistName.text = "";
+                    _watchlistDesc.text = "";
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.grey[800],
@@ -91,12 +135,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                         myFutureList.add(
                           FutureList(
                             name: _watchlistName.text,
+                            desc: _watchlistDesc.text,
                             isCompleted: false,
                           ),
                         );
                       });
                       Navigator.pop(context);
                       _watchlistName.text = "";
+                      _watchlistDesc.text = "";
                     }
                   },
                   style: TextButton.styleFrom(
@@ -134,7 +180,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       ),
       body: (ListView.separated(
         itemCount: myFutureList.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 8,),
+        separatorBuilder: (context, index) => const SizedBox(height: 10),
         itemBuilder: (context, index) {
           final myList = myFutureList[index];
           return CheckboxListTile(
@@ -151,18 +197,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     myList.isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
-                fontWeight: FontWeight.w500
+                fontWeight: FontWeight.w500,
               ),
             ),
+            subtitle: myList.desc != "" ? Text(myList.desc) : null,
             controlAffinity: ListTileControlAffinity.leading,
             hoverColor: Colors.blueGrey,
 
-            tileColor: Colors.grey.shade100, // Background color of the tile
-            selectedTileColor:Colors.cyan, // Background when selected is true
+            tileColor: Colors.grey.shade100,
+            selectedTileColor: Colors.cyan,
             selected: myList.isCompleted,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
-              side: BorderSide(width: 1, color: Colors.blueGrey)
+              side: BorderSide(width: 1, color: Colors.blueGrey),
             ),
           );
           // InkWell(
@@ -187,7 +234,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           //   ),
           // );
         },
-        padding: EdgeInsets.all(12.0),     
+        padding: EdgeInsets.all(12.0),
       )),
       floatingActionButton: Semantics(
         label: "Add WatchList",
