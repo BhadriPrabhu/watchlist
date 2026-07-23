@@ -179,64 +179,94 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         backgroundColor: Colors.blueAccent,
         titleSpacing: 24.0,
       ),
-      body: (ListView.separated(
-        itemCount: myFutureList.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        itemBuilder: (context, index) {
-          final myList = myFutureList[index];
-          return CheckboxListTile(
-            value: myList.isCompleted,
-            onChanged: (newValue) {
-              setState(() {
-                myList.isCompleted = newValue ?? false;
-              });
-            },
-            title: Text(
-              myList.name,
-              style: TextStyle(
-                decoration:
-                    myList.isCompleted
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                fontWeight: FontWeight.w500,
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            child: TextField(
+              // controller: _watchlistName,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: "Search",
+                hintStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0 ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(width: 0.5, color: Colors.black),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(width: 0.5, color: Colors.black),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(width: 0.5, color: Colors.black),
+                ),
+                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 24.0,)
               ),
             ),
-            subtitle: myList.desc != "" ? Text(myList.desc) : null,
-            controlAffinity: ListTileControlAffinity.leading,
-            hoverColor: Colors.blueGrey,
+          ),          
+          Expanded(
+            child: (ListView.separated(
+              itemCount: myFutureList.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                final myList = myFutureList[index];
+                return CheckboxListTile(
+                  value: myList.isCompleted,
+                  onChanged: (newValue) {
+                    setState(() {
+                      myList.isCompleted = newValue ?? false;
+                    });
+                  },
+                  title: Text(
+                    myList.name,
+                    style: TextStyle(
+                      decoration:
+                          myList.isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: myList.desc != "" ? Text(myList.desc) : null,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  hoverColor: Colors.blueGrey,
 
-            tileColor: Colors.grey.shade100,
-            selectedTileColor: Colors.cyan,
-            selected: myList.isCompleted,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(width: 1, color: Colors.blueGrey),
-            ),
-          );
-          // InkWell(
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(
-          //       horizontal: 20.0,
-          //       vertical: 6.0,
-          //     ),
-          //     child: Row(
-          //       children: [
-          //         Checkbox(
-          //           value: myList.isCompleted,
-          //           onChanged: (bool? newValue) {
-          //             setState(() {
-          //               myList.isCompleted = newValue ?? false;
-          //             });
-          //           },
-          //         ),
-          //         Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
-          //       ],
-          //     ),
-          //   ),
-          // );
-        },
-        padding: EdgeInsets.all(12.0),
-      )),
+                  tileColor: Colors.grey.shade100,
+                  selectedTileColor: Colors.cyan,
+                  selected: myList.isCompleted,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(width: 1, color: Colors.blueGrey),
+                  ),
+                );
+                // InkWell(
+                //   child: Padding(
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 20.0,
+                //       vertical: 6.0,
+                //     ),
+                //     child: Row(
+                //       children: [
+                //         Checkbox(
+                //           value: myList.isCompleted,
+                //           onChanged: (bool? newValue) {
+                //             setState(() {
+                //               myList.isCompleted = newValue ?? false;
+                //             });
+                //           },
+                //         ),
+                //         Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
+                //       ],
+                //     ),
+                //   ),
+                // );
+              },
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            )),
+          ),
+        ],
+      ),
       floatingActionButton: Semantics(
         label: "Add WatchList",
         child: FloatingActionButton(
