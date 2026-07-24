@@ -37,13 +37,16 @@ class WatchlistScreen extends StatefulWidget {
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
   List<FutureList> myFutureList = [
-    FutureList(name: "Spider Man - Brand New Day", desc: "In Cinemas on July 30"),
+    FutureList(
+      name: "Spider Man - Brand New Day",
+      desc: "In Cinemas on July 30",
+    ),
     FutureList(name: "Avengers - Doomsday", desc: "In Cinemas on December 18"),
   ];
   List<FutureList> filteredList = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     filteredList = myFutureList;
   }
@@ -170,12 +173,15 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     );
   }
 
-  void _filterList(String query){
+  void _filterList(String query) {
     List<FutureList> res = [];
-    if(query.isEmpty){
+    if (query.isEmpty) {
       res = myFutureList;
-    }else{
-      res = myFutureList.where((i) => i.name.toLowerCase().contains(query.toLowerCase())).toList();
+    } else {
+      res =
+          myFutureList
+              .where((i) => i.name.toLowerCase().contains(query.toLowerCase()))
+              .toList();
     }
 
     setState(() {
@@ -205,7 +211,10 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
               autofocus: true,
               decoration: InputDecoration(
                 hintText: "Search",
-                hintStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0 ),
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.0,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(width: 0.5, color: Colors.black),
@@ -218,72 +227,80 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(width: 0.5, color: Colors.black),
                 ),
-                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 24.0,)
+                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 24.0),
               ),
               onChanged: (value) {
                 _filterList(value);
               },
             ),
-          ),          
+          ),
           Expanded(
-            child: (ListView.separated(
-              itemCount: filteredList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final myList = filteredList[index];
-                return CheckboxListTile(
-                  value: myList.isCompleted,
-                  onChanged: (newValue) {
-                    setState(() {
-                      myList.isCompleted = newValue ?? false;
-                    });
-                  },
-                  title: Text(
-                    myList.name,
-                    style: TextStyle(
-                      decoration:
-                          myList.isCompleted
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  subtitle: myList.desc != "" ? Text(myList.desc) : null,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  hoverColor: Colors.blueGrey,
+            child:
+                filteredList.isNotEmpty
+                    ? (ListView.separated(
+                      itemCount: filteredList.length,
+                      separatorBuilder:
+                          (context, index) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final myList = filteredList[index];
+                        return CheckboxListTile(
+                          value: myList.isCompleted,
+                          onChanged: (newValue) {
+                            setState(() {
+                              myList.isCompleted = newValue ?? false;
+                            });
+                          },
+                          title: Text(
+                            myList.name,
+                            style: TextStyle(
+                              decoration:
+                                  myList.isCompleted
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          subtitle:
+                              myList.desc != "" ? Text(myList.desc) : null,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          hoverColor: Colors.blueGrey,
 
-                  tileColor: Colors.grey.shade100,
-                  selectedTileColor: Colors.cyan,
-                  selected: myList.isCompleted,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(width: 1, color: Colors.blueGrey),
-                  ),
-                );
-                // InkWell(
-                //   child: Padding(
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 20.0,
-                //       vertical: 6.0,
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         Checkbox(
-                //           value: myList.isCompleted,
-                //           onChanged: (bool? newValue) {
-                //             setState(() {
-                //               myList.isCompleted = newValue ?? false;
-                //             });
-                //           },
-                //         ),
-                //         Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
-                //       ],
-                //     ),
-                //   ),
-                // );
-              },
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            )),
+                          tileColor: Colors.grey.shade100,
+                          selectedTileColor: Colors.cyan,
+                          selected: myList.isCompleted,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(width: 1, color: Colors.blueGrey),
+                          ),
+                        );
+                        // InkWell(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.symmetric(
+                        //       horizontal: 20.0,
+                        //       vertical: 6.0,
+                        //     ),
+                        //     child: Row(
+                        //       children: [
+                        //         Checkbox(
+                        //           value: myList.isCompleted,
+                        //           onChanged: (bool? newValue) {
+                        //             setState(() {
+                        //               myList.isCompleted = newValue ?? false;
+                        //             });
+                        //           },
+                        //         ),
+                        //         Text(myList.name, style: TextStyle(decoration: myList.isCompleted ? TextDecoration.lineThrough : TextDecoration.none),),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                    ))
+                    : Center(child: Text("No results found")),
           ),
         ],
       ),
