@@ -37,12 +37,16 @@ class WatchlistScreen extends StatefulWidget {
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
   List<FutureList> myFutureList = [
-    FutureList(
-      name: "Spider Man - Brand New Day",
-      desc: "In Cinemas on July 30",
-    ),
+    FutureList(name: "Spider Man - Brand New Day", desc: "In Cinemas on July 30"),
     FutureList(name: "Avengers - Doomsday", desc: "In Cinemas on December 18"),
   ];
+  List<FutureList> filteredList = [];
+
+  @override
+  void initState(){
+    super.initState();
+    filteredList = myFutureList;
+  }
 
   final TextEditingController _watchlistName = TextEditingController();
   final TextEditingController _watchlistDesc = TextEditingController();
@@ -166,7 +170,20 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     );
   }
 
-  // final TextEditingController _textContoller = TextEditingController();
+  void _filterList(String query){
+    List<FutureList> res = [];
+    if(query.isEmpty){
+      res = myFutureList;
+    }else{
+      res = myFutureList.where((i) => i.name.toLowerCase().contains(query.toLowerCase())).toList();
+    }
+
+    setState(() {
+      filteredList = res;
+    });
+  }
+
+  final TextEditingController _searchContoller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +201,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             child: TextField(
-              // controller: _watchlistName,
+              controller: _searchContoller,
               autofocus: true,
               decoration: InputDecoration(
                 hintText: "Search",
@@ -203,14 +220,17 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                 ),
                 prefixIcon: Icon(Icons.search, color: Colors.grey, size: 24.0,)
               ),
+              onChanged: (value) {
+                _filterList(value);
+              },
             ),
           ),          
           Expanded(
             child: (ListView.separated(
-              itemCount: myFutureList.length,
+              itemCount: filteredList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                final myList = myFutureList[index];
+                final myList = filteredList[index];
                 return CheckboxListTile(
                   value: myList.isCompleted,
                   onChanged: (newValue) {
