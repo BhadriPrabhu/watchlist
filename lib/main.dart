@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: "Watchlist",
       theme: ThemeData(
-        textTheme: GoogleFonts.outfitTextTheme(),
+        textTheme: GoogleFonts.outfitTextTheme(Theme.of(context).textTheme).apply(fontFamilyFallback: const ['sans-serif','Arial']),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: WatchlistScreen(),
