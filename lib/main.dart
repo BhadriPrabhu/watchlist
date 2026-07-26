@@ -199,6 +199,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   }
 
   final TextEditingController _searchContoller = TextEditingController();
+  bool _isClearHover = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -252,6 +253,16 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     _searchContoller.text.isNotEmpty
                         ? MouseRegion(
                           cursor: SystemMouseCursors.click,
+                          onEnter: (_) => {
+                            setState(() {
+                            _isClearHover = true;
+                          })
+                          },
+                          onExit: (_) {
+                            setState(() {
+                              _isClearHover = false;
+                            });
+                          },
                           child: GestureDetector(
                             onTap: () {
                               _searchContoller.clear();
@@ -260,7 +271,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                             child: Icon(
                               Icons.clear,
                               size: 20.0,
-                              color: Colors.grey,
+                              color: _isClearHover ? Colors.black : Colors.grey,
                             ),
                           ),
                         )
