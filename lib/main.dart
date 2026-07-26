@@ -20,7 +20,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: "Watchlist",
       theme: ThemeData(
-        textTheme: GoogleFonts.outfitTextTheme(Theme.of(context).textTheme).apply(fontFamilyFallback: const ['sans-serif','Arial']),
+        textTheme: GoogleFonts.outfitTextTheme(
+          Theme.of(context).textTheme,
+        ).apply(fontFamilyFallback: const ['sans-serif', 'Arial']),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: WatchlistScreen(),
@@ -63,8 +65,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             "Add New Watchlist",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w900,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w800,
             ),
           ),
           insetPadding: EdgeInsets.symmetric(horizontal: 30.0),
@@ -123,15 +125,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     _watchlistDesc.text = "";
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.grey[800],
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    foregroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    side: BorderSide(color: Colors.grey[400]!),
                   ),
                   child: Text(
                     "Cancel",
                     style: TextStyle(
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       fontSize: 16.0,
-                      color: Colors.black,
+                      color: Colors.grey[900],
                     ),
                   ),
                 ),
@@ -155,12 +161,15 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue[700],
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                   child: Text(
                     "Create",
                     style: TextStyle(
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       fontSize: 16.0,
                     ),
                   ),
@@ -228,6 +237,34 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   borderSide: BorderSide(width: 0.5, color: Colors.black),
                 ),
                 prefixIcon: Icon(Icons.search, color: Colors.grey, size: 24.0),
+                // suffix: IconButton(
+                //   onPressed: () {
+
+                //   },
+                //   icon: Icon(Icons.clear, size: 20.0, color: Colors.grey,),
+                //   style: TextButton.styleFrom(
+                //     padding: EdgeInsets.zero,
+                //   ),
+                //   constraints: const BoxConstraints(),
+                //   splashRadius: 0.1,
+                // )
+                suffixIcon:
+                    _searchContoller.text.isNotEmpty
+                        ? MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              _searchContoller.clear();
+                              _filterList("");
+                            },
+                            child: Icon(
+                              Icons.clear,
+                              size: 20.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                        : null,
               ),
               onChanged: (value) {
                 _filterList(value);
