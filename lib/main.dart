@@ -6,15 +6,21 @@ void main() {
   runApp(const MainApp());
 }
 
-enum WatchType { movie, song, series, anime, tvshow }
+// enum WatchType { movie, song, series, anime, tvshow }
 
 class FutureList {
   final String id;
   String name;
   String desc;
-  WatchType type;
+  String type;
   bool isCompleted;
-  FutureList({required this.id, required this.name, this.desc = "", this.isCompleted = false, this.type = WatchType.movie});
+  FutureList({
+    required this.id,
+    required this.name,
+    this.desc = "",
+    this.isCompleted = false,
+    this.type = "Movie",
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -48,9 +54,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       id: '1',
       name: "Spider Man - Brand New Day",
       desc: "In Cinemas on July 30",
-      type: WatchType.movie,
+      type: "Movie",
     ),
-    FutureList(id: '2', name: "Avengers - Doomsday", desc: "In Cinemas on December 18", type: WatchType.movie),
+    FutureList(
+      id: '2',
+      name: "Avengers - Doomsday",
+      desc: "In Cinemas on December 18",
+      type: "Movie",
+    ),
   ];
   List<FutureList> filteredList = [];
 
@@ -62,6 +73,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   final TextEditingController _watchlistName = TextEditingController();
   final TextEditingController _watchlistDesc = TextEditingController();
+  String _typeValue = "Movie";
+  final List<String> typeList = ["Movie", "Song", "Series", "Anime", "TV Show"];
 
   Future<void> _showAddDialog(BuildContext context) async {
     return showDialog(
@@ -117,6 +130,17 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     ),
                     style: TextStyle(),
                   ),
+                  DropdownButtonFormField<String>(
+                    value: _typeValue,
+                    items: typeList.map((String e) {
+                      return DropdownMenuItem<String>(value: e ,child: Text(e));
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _typeValue = value.toString();
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -130,6 +154,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     Navigator.pop(context);
                     _watchlistName.text = "";
                     _watchlistDesc.text = "";
+                    _typeValue = "Movie";
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
@@ -157,7 +182,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                             id: Uuid().v4(),
                             name: _watchlistName.text,
                             desc: _watchlistDesc.text,
-                            type: WatchType.movie,
+                            type: _typeValue,
                             isCompleted: false,
                           ),
                         );
@@ -165,6 +190,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       Navigator.pop(context);
                       _watchlistName.text = "";
                       _watchlistDesc.text = "";
+                      _typeValue = "Movie";
                     }
                   },
                   style: TextButton.styleFrom(
