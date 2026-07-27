@@ -132,9 +132,13 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   ),
                   DropdownButtonFormField<String>(
                     value: _typeValue,
-                    items: typeList.map((String e) {
-                      return DropdownMenuItem<String>(value: e ,child: Text(e));
-                    }).toList(),
+                    items:
+                        typeList.map((String e) {
+                          return DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          );
+                        }).toList(),
                     onChanged: (value) {
                       setState(() {
                         _typeValue = value.toString();
@@ -345,7 +349,28 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                             ),
                           ),
                           subtitle:
-                              myList.desc != "" ? Text(myList.desc) : null,
+                              // myList.desc != "" ? Text('${myList.type} \u2022 ${myList.desc}') : Text(myList.type),
+                              myList.desc != ""
+                                  ? Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(text: myList.type),
+                                        WidgetSpan(
+                                          alignment:
+                                              PlaceholderAlignment.middle,
+                                          child: Text(
+                                            " \u2022 ",
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        TextSpan(text: myList.desc),
+                                      ],
+                                    ),
+                                  )
+                                  : Text(myList.type),
                           controlAffinity: ListTileControlAffinity.leading,
                           hoverColor: Colors.blueGrey,
 
