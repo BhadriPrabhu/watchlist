@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
   runApp(const MainApp());
 }
 
+enum WatchType { movie, song, series, anime, tvshow }
+
 class FutureList {
+  final String id;
   String name;
   String desc;
+  WatchType type;
   bool isCompleted;
-  FutureList({required this.name, this.desc = "", this.isCompleted = false});
+  FutureList({required this.id, required this.name, this.desc = "", this.isCompleted = false, this.type = WatchType.movie});
 }
 
 class MainApp extends StatelessWidget {
@@ -40,10 +45,12 @@ class WatchlistScreen extends StatefulWidget {
 class _WatchlistScreenState extends State<WatchlistScreen> {
   List<FutureList> myFutureList = [
     FutureList(
+      id: '1',
       name: "Spider Man - Brand New Day",
       desc: "In Cinemas on July 30",
+      type: WatchType.movie,
     ),
-    FutureList(name: "Avengers - Doomsday", desc: "In Cinemas on December 18"),
+    FutureList(id: '2', name: "Avengers - Doomsday", desc: "In Cinemas on December 18", type: WatchType.movie),
   ];
   List<FutureList> filteredList = [];
 
@@ -147,8 +154,10 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       setState(() {
                         myFutureList.add(
                           FutureList(
+                            id: Uuid().v4(),
                             name: _watchlistName.text,
                             desc: _watchlistDesc.text,
+                            type: WatchType.movie,
                             isCompleted: false,
                           ),
                         );
@@ -253,11 +262,12 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     _searchContoller.text.isNotEmpty
                         ? MouseRegion(
                           cursor: SystemMouseCursors.click,
-                          onEnter: (_) => {
-                            setState(() {
-                            _isClearHover = true;
-                          })
-                          },
+                          onEnter:
+                              (_) => {
+                                setState(() {
+                                  _isClearHover = true;
+                                }),
+                              },
                           onExit: (_) {
                             setState(() {
                               _isClearHover = false;
