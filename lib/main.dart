@@ -238,6 +238,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   }
 
   final TextEditingController _searchContoller = TextEditingController();
+  final String _typeFilterContoller = "Movie";
   bool _isClearHover = false;
   @override
   Widget build(BuildContext context) {
@@ -250,6 +251,23 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         toolbarHeight: 60.0,
         backgroundColor: Colors.blueAccent,
         titleSpacing: 24.0,
+        // actions: [
+        //   DropdownButtonFormField<String>(
+        //     value: _typeFilterContoller,
+        //     items: typeList.map((String e) {
+        //       return DropdownMenuItem<String>(
+        //         value: e,
+        //         child: Text(e),
+        //       );
+        //     },
+        //   ).toList(),
+        //   onChanged: (value) {
+        //     setState(() {
+              
+        //     });
+        //   },
+        //   )
+        // ],
       ),
       body: Column(
         children: [
@@ -369,6 +387,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                                         TextSpan(text: myList.desc),
                                       ],
                                     ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   )
                                   : Text(myList.type),
                           controlAffinity: ListTileControlAffinity.leading,
