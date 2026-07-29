@@ -36,6 +36,7 @@ class MainApp extends StatelessWidget {
         ).apply(fontFamilyFallback: const ['sans-serif', 'Arial']),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      debugShowCheckedModeBanner: false,
       home: WatchlistScreen(),
     );
   }
@@ -223,14 +224,18 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   void _filterList(String query) {
     List<FutureList> res = [];
-    if (query.isEmpty) {
-      res = myFutureList;
-    } else {
+    // if (query.isEmpty) {
+    //   res = myFutureList;
+    // } else {
       res =
           myFutureList
-              .where((i) => i.name.toLowerCase().contains(query.toLowerCase()))
+              .where(
+                (i){
+                  return i.name.toLowerCase().contains(query.toLowerCase()) && (_typeFilterContoller == "All" || _typeFilterContoller == i.type);
+                  },
+              )
               .toList();
-    }
+    // }
 
     setState(() {
       filteredList = res;
@@ -238,7 +243,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   }
 
   final TextEditingController _searchContoller = TextEditingController();
-  final String _typeFilterContoller = "Movie";
+  String _typeFilterContoller = "All";
   bool _isClearHover = false;
   @override
   Widget build(BuildContext context) {
@@ -251,23 +256,32 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
         toolbarHeight: 60.0,
         backgroundColor: Colors.blueAccent,
         titleSpacing: 24.0,
-        // actions: [
-        //   DropdownButtonFormField<String>(
-        //     value: _typeFilterContoller,
-        //     items: typeList.map((String e) {
-        //       return DropdownMenuItem<String>(
-        //         value: e,
-        //         child: Text(e),
-        //       );
-        //     },
-        //   ).toList(),
-        //   onChanged: (value) {
-        //     setState(() {
-              
-        //     });
-        //   },
-        //   )
-        // ],
+        actions: [
+          SizedBox(
+            width: 110,
+            child: DropdownButtonFormField<String>(
+              value: _typeFilterContoller,
+              items: [
+                const DropdownMenuItem(value: "All", child: Text("All")),
+                ...typeList.map((String e) {
+                  return DropdownMenuItem<String>(value: e, child: Text(e));
+                }),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _typeFilterContoller = value.toString();
+                });
+                _filterList("");
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              style: GoogleFonts.outfit().apply(
+                fontFamilyFallback: const ['sans-serif', 'Arial'],
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
