@@ -193,6 +193,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                         );
                       });
                       Navigator.pop(context);
+                      _filterList(_searchContoller.text.toString());
                       _watchlistName.text = "";
                       _watchlistDesc.text = "";
                       _typeValue = "Movie";
@@ -224,18 +225,11 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   void _filterList(String query) {
     List<FutureList> res = [];
-    // if (query.isEmpty) {
-    //   res = myFutureList;
-    // } else {
-      res =
-          myFutureList
-              .where(
-                (i){
-                  return i.name.toLowerCase().contains(query.toLowerCase()) && (_typeFilterContoller == "All" || _typeFilterContoller == i.type);
-                  },
-              )
-              .toList();
-    // }
+    res =
+        myFutureList.where((i) {
+          return i.name.toLowerCase().contains(query.toLowerCase()) &&
+              (_typeFilterContoller == "All" || _typeFilterContoller == i.type);
+        }).toList();
 
     setState(() {
       filteredList = res;
@@ -271,7 +265,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                 setState(() {
                   _typeFilterContoller = value.toString();
                 });
-                _filterList("");
+                _filterList(_searchContoller.text.toString());
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide.none),
