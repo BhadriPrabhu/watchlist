@@ -181,19 +181,18 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_watchlistName.text.isNotEmpty) {
-                      setState(() {
-                        myFutureList.add(
-                          FutureList(
-                            id: Uuid().v4(),
-                            name: _watchlistName.text,
-                            desc: _watchlistDesc.text,
-                            type: _typeValue,
-                            isCompleted: false,
-                          ),
-                        );
-                      });
+                      final newItem = FutureList(
+                        id: Uuid().v4(),
+                        name: _watchlistName.text,
+                        desc: _watchlistDesc.text,
+                        type: _typeValue,
+                        isCompleted: false,
+                      );
                       Navigator.pop(context);
-                      _filterList(_searchContoller.text.toString());
+                      setState(() {
+                        _filterList(_searchContoller.text.toString());
+                        myFutureList.add(newItem);
+                      });
                       _watchlistName.text = "";
                       _watchlistDesc.text = "";
                       _typeValue = "Movie";
@@ -256,9 +255,9 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             child: DropdownButtonFormField<String>(
               value: _typeFilterContoller,
               items: [
-                const DropdownMenuItem(value: "All", child: Text("All")),
+                const DropdownMenuItem(value: "All", child: Text("All", style: TextStyle(fontSize: 14.0),)),
                 ...typeList.map((String e) {
-                  return DropdownMenuItem<String>(value: e, child: Text(e));
+                  return DropdownMenuItem<String>(value: e, child: Text(e, style: TextStyle(fontSize: 14.0),));
                 }),
               ],
               onChanged: (value) {
@@ -283,7 +282,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             child: TextField(
               controller: _searchContoller,
-              autofocus: true,
+              autofocus: false,
               decoration: InputDecoration(
                 hintText: "Search",
                 hintStyle: TextStyle(
