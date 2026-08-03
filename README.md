@@ -13,7 +13,7 @@ This version of the project is built as a minimal viable product (MVP) to demons
 ## Prerequisites
 
 - Flutter SDK (see https://flutter.dev)
-- Android Studio / Xcode for mobile development (optional for web/desktop)
+- Android Studio mobile development (optional for web/desktop)
 
 ## Getting Started
 
