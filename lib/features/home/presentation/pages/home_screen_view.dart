@@ -16,6 +16,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   void initState() {
     // _loadList();
     super.initState();
+    context.read<WatchlistCubit>().loadList();
   }
 
   @override
@@ -34,7 +35,17 @@ class _HomeScreenViewState extends State<HomeScreenView> {
         builder: (context, state) {
           return Column(
             children: [
-              Text("Watchlist"),
+              Expanded(
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    final currList = state[index];
+                    return Column(children: [Text("Hey"), Text(currList.name)]);
+                  },
+                  separatorBuilder:
+                      (context, index) => const SizedBox(height: 8.0),
+                  itemCount: state.length,
+                ),
+              ),
             ],
           );
         },
