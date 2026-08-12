@@ -256,9 +256,10 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               child: CheckboxListTile(
                                 value: myList.isCompleted,
                                 onChanged: (newValue) {
-                                  setState(() {
-                                    myList.isCompleted = newValue ?? false;
-                                  });
+                                  context.read<WatchlistCubit>().toggleTask(myList);
+                                  // setState(() {
+                                  //   myList.isCompleted = newValue ?? false;
+                                  // });
                                 },
                                 title: Text(
                                   myList.name,
