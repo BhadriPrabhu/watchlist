@@ -186,123 +186,137 @@ class _HomeScreenViewState extends State<HomeScreenView> {
           return Column(
             children: [
               Expanded(
-                child: (ListView.separated(
-                  itemCount: state.length,
-                  separatorBuilder:
-                      (context, index) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    final myList = state[index];
-                    return Dismissible(
-                      key: Key(myList.id.toString()),
-                      // direction: DismissDirection.vertical,
-                      background: Container(
-                        // color: Colors.red,
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.red.shade600,
-                        ),
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                          size: 24.0,
-                        ),
-                      ),
-                      direction: DismissDirection.endToStart,
-                      confirmDismiss: (direction) async {
-                        return await showDialog<bool>(
-                              context: context,
-                              builder:
-                                  (context) => AlertDialog(
-                                    title: Text("Ready to delete"),
-                                    actions: [
-                                      Row(
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(false);
-                                            },
-                                            child: Text("Cancel"),
+                child:
+                    state.isNotEmpty
+                        ? (ListView.separated(
+                          itemCount: state.length,
+                          separatorBuilder:
+                              (context, index) => const SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            final myList = state[index];
+                            return Dismissible(
+                              key: Key(myList.id.toString()),
+                              // direction: DismissDirection.vertical,
+                              background: Container(
+                                // color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 20.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.red.shade600,
+                                ),
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                  size: 24.0,
+                                ),
+                              ),
+                              direction: DismissDirection.endToStart,
+                              confirmDismiss: (direction) async {
+                                return await showDialog<bool>(
+                                      context: context,
+                                      builder:
+                                          (context) => AlertDialog(
+                                            title: Text("Ready to delete"),
+                                            actions: [
+                                              Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(
+                                                        context,
+                                                      ).pop(false);
+                                                    },
+                                                    child: Text("Cancel"),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(
+                                                        context,
+                                                      ).pop(true);
+                                                    },
+                                                    child: Text("Delete"),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(true);
-                                            },
-                                            child: Text("Delete"),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                    ) ??
+                                    false;
+                              },
+                              onDismissed: (direction) {
+                                setState(() {
+                                  state.removeWhere(
+                                    (i) => i.id == myList.id,
+                                  );
+                                  // _filterList(_searchContoller.text.toString());
+                                });
+                              },
+                              child: CheckboxListTile(
+                                value: myList.isCompleted,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    myList.isCompleted = newValue ?? false;
+                                  });
+                                },
+                                title: Text(
+                                  myList.name,
+                                  style: TextStyle(
+                                    decoration:
+                                        myList.isCompleted
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                            ) ??
-                            false;
-                      },
-                      onDismissed: (direction) {
-                        setState(() {
-                          state.removeWhere((i) => i.id == myList.id);
-                          // _filterList(_searchContoller.text.toString());
-                        });
-                      },
-                      child: CheckboxListTile(
-                        value: myList.isCompleted,
-                        onChanged: (newValue) {
-                          setState(() {
-                            myList.isCompleted = newValue ?? false;
-                          });
-                        },
-                        title: Text(
-                          myList.name,
-                          style: TextStyle(
-                            decoration:
-                                myList.isCompleted
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        subtitle:
-                            // myList.desc != "" ? Text('${myList.type} \u2022 ${myList.desc}') : Text(myList.type),
-                            myList.desc != ""
-                                ? Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: myList.type),
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.middle,
-                                        child: Text(
-                                          " \u2022 ",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
+                                ),
+                                subtitle:
+                                    // myList.desc != "" ? Text('${myList.type} \u2022 ${myList.desc}') : Text(myList.type),
+                                    myList.desc != ""
+                                        ? Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: myList.type),
+                                              WidgetSpan(
+                                                alignment:
+                                                    PlaceholderAlignment.middle,
+                                                child: Text(
+                                                  " \u2022 ",
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              TextSpan(text: myList.desc),
+                                            ],
                                           ),
-                                        ),
-                                      ),
-                                      TextSpan(text: myList.desc),
-                                    ],
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                )
-                                : Text(myList.type),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        hoverColor: Colors.blueGrey,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        )
+                                        : Text(myList.type),
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                hoverColor: Colors.blueGrey,
 
-                        tileColor: Colors.grey.shade100,
-                        selectedTileColor: Colors.cyan,
-                        selected: myList.isCompleted,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(width: 1, color: Colors.blueGrey),
-                        ),
-                      ),
-                    );
-                  },
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                )),
+                                tileColor: Colors.grey.shade100,
+                                selectedTileColor: Colors.cyan,
+                                selected: myList.isCompleted,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: BorderSide(
+                                    width: 1,
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8.0,
+                          ),
+                        ))
+                        : Center(child: Text("No results found")),
               ),
             ],
           );
