@@ -245,12 +245,13 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                     false;
                               },
                               onDismissed: (direction) {
-                                setState(() {
-                                  state.removeWhere(
-                                    (i) => i.id == myList.id,
-                                  );
-                                  // _filterList(_searchContoller.text.toString());
-                                });
+                                context.read<WatchlistCubit>().deleteTask(myList);
+                                // setState(() {
+                                //   state.removeWhere(
+                                //     (i) => i.id == myList.id,
+                                //   );
+                                //   // _filterList(_searchContoller.text.toString());
+                                // });
                               },
                               child: CheckboxListTile(
                                 value: myList.isCompleted,
