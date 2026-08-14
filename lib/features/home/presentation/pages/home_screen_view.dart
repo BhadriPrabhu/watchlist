@@ -23,6 +23,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   String _typeValue = "Movie";
   final List<String> typeList = ["Movie", "Song", "Series", "Anime", "TV Show"];
 
+  final TextEditingController _searchQuery = TextEditingController();
+
   Future<void> _showAddDialog(BuildContext context) async {
     return showDialog(
       context: context,
@@ -185,6 +187,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
         builder: (context, state) {
           return Column(
             children: [
+              TextField(controller: _searchQuery, onChanged: (value) {
+                context.read<WatchlistCubit>().searchList(value);
+              },),
               Expanded(
                 child:
                     state.isNotEmpty
@@ -268,7 +273,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                         myList.isCompleted
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
                                 subtitle:

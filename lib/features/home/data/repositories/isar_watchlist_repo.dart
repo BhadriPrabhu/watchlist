@@ -33,4 +33,11 @@ class IsarWatchlistRepo implements WatchlistRepo {
   Future<void> deleteWatchlist(WatchList list) async {
     await db.writeTxn(() => db.watchlistIsars.delete(list.id));
   }
+
+  @override
+  Future<List<WatchList>> filterWatchList(String query) async {
+    final res = await db.watchlistIsars.filter().nameContains(query, caseSensitive: false).findAll();
+
+    return res.map((e) => e.toDomain()).toList();
+  }
 }

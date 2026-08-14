@@ -36,4 +36,13 @@ class WatchlistCubit extends Cubit<List<WatchList>> {
 
     loadList();
   }
+
+  Future<void> searchList(String query) async {
+    if(query.isEmpty){
+      await loadList();
+    }else{
+      final res = await watchListRepo.filterWatchList(query);
+      emit(res);
+    }
+  }
 }

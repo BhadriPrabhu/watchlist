@@ -8,4 +8,6 @@ abstract class WatchlistRepo {
   Future<void> editWatchlist(WatchList list);
 
   Future<void> deleteWatchlist(WatchList list);
+
+  Future<List<WatchList>> filterWatchList(String query);
 }

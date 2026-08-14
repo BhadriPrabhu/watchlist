@@ -98,6 +98,21 @@ class InMemoryWatchlistRepo implements WatchlistRepo {
   Future<List<WatchList>> getWatchlist() async {
     return List<WatchList>.from(_items);
   }
+
+  @override
+  Future<List<WatchList>> filterWatchList(String query) async {
+    if (query.isEmpty) {
+      return List<WatchList>.from(_items);
+    }
+
+    // Filter the items where the name contains the search query
+    final filteredList =
+        _items.where((item) {
+          return item.name.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+
+    return filteredList;
+  }
 }
 
 // class WatchlistScreen extends StatefulWidget {
