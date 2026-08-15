@@ -187,9 +187,40 @@ class _HomeScreenViewState extends State<HomeScreenView> {
         builder: (context, state) {
           return Column(
             children: [
-              TextField(controller: _searchQuery, onChanged: (value) {
-                context.read<WatchlistCubit>().searchList(value);
-              },),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                child: TextField(
+                  controller: _searchQuery,
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    hintText: "Search",
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(width: 0.5, color: Colors.black),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(width: 0.5, color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(width: 0.5, color: Colors.black),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                      size: 24.0,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    context.read<WatchlistCubit>().searchList(value);
+                  },
+                ),
+              ),
               Expanded(
                 child:
                     state.isNotEmpty
@@ -250,7 +281,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                                     false;
                               },
                               onDismissed: (direction) {
-                                context.read<WatchlistCubit>().deleteTask(myList);
+                                context.read<WatchlistCubit>().deleteTask(
+                                  myList,
+                                );
                                 // setState(() {
                                 //   state.removeWhere(
                                 //     (i) => i.id == myList.id,
@@ -261,7 +294,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               child: CheckboxListTile(
                                 value: myList.isCompleted,
                                 onChanged: (newValue) {
-                                  context.read<WatchlistCubit>().toggleTask(myList);
+                                  context.read<WatchlistCubit>().toggleTask(
+                                    myList,
+                                  );
                                   // setState(() {
                                   //   myList.isCompleted = newValue ?? false;
                                   // });
